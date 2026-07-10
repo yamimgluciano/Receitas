@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar — Receitas em Casa</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #F5EEE3;
+    color: #7C8A56;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .card {
+    background: #FFFDF9;
+    border: 1px solid #E6DAC5;
+    border-radius: 10px;
+    padding: 32px;
+    width: 320px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+
+  p.subtitle {
+    color: #8A7A68;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    text-align: left;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 4px;
+    border: 1px solid #E6DAC5;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .erro {
+    color: #A8402A;
+    font-size: 12px;
+    text-align: left;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background: #B5602F;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  button:hover {
+    background: #8F4A24;
+  }
+
+  #mensagem {
+    font-size: 13px;
+    margin-top: 12px;
+  }
+
+  .link {
+    font-size: 13px;
+    margin-top: 16px;
+  }
+
+  a {
+    color: #7C8A56;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Receitas em Casa</h1>
+    <p class="subtitle">Entre para ver suas receitas salvas</p>
+
+    <form id="formLogin">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="seuemail@exemplo.com">
+      <span class="erro" id="erroEmail"></span>
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" placeholder="Sua senha">
+      <span class="erro" id="erroSenha"></span>
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <p id="mensagem"></p>
+
+    <p class="link">Não tem conta? <a href="#">Cadastre-se</a></p>
+  </div>
+
+<script>
+  const form = document.getElementById('formLogin');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+    const erroEmail = document.getElementById('erroEmail');
+    const erroSenha = document.getElementById('erroSenha');
+    const mensagem = document.getElementById('mensagem');
+
+    erroEmail.textContent = '';
+    erroSenha.textContent = '';
+    mensagem.textContent = '';
+
+    let temErro = false;
+
+    if (!email.includes('@') || !email.includes('.')) {
+      erroEmail.textContent = 'Digite um e-mail válido.';
+      temErro = true;
+    }
+
+    if (senha.length < 6) {
+      erroSenha.textContent = 'A senha precisa ter pelo menos 6 caracteres.';
+      temErro = true;
+    }
+
+    if (!temErro) {
+      mensagem.textContent = 'Login validado! (sem back-end ainda)';
+    }
+  });
+</script>
+
+</body>
+</html>
