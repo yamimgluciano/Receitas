@@ -1,0 +1,422 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600&display=swap');
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: #F5EEE3;
+  color: #3A2E22;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px 16px;
+}
+
+.card {
+  background: #FFFDF9;
+  border: 1px solid #E6DAC5;
+  border-radius: 12px;
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  box-sizing: border-box;
+  box-shadow: 0 4px 14px rgba(58, 46, 34, 0.06);
+}
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 23px;
+  margin-bottom: 4px;
+}
+
+p.subtitle {
+  color: #8A7A68;
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 11px 12px;
+  margin-bottom: 16px;
+  border: 1px solid #E6DAC5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Inter', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #B5602F;
+}
+
+.checkboxes {
+  text-align: left;
+  margin: 4px 0 20px;
+}
+
+.checkboxes label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  width: 47%;
+  margin-bottom: 8px;
+}
+
+.checkboxes input {
+  width: auto;
+  margin: 0;
+}
+
+button {
+  width: 100%;
+  padding: 11px;
+  background: #B5602F;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background 0.15s ease;
+}
+
+button:hover {
+  background: #8F4A24;
+}
+
+.link {
+  font-size: 14px;
+  margin-top: 18px;
+  color: #8A7A68;
+}
+
+a {
+  color: #B5602F;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 380px) {
+  .card {
+    padding: 28px 22px;
+  }
+}
+
+/* ===== Página inicial ===== */
+
+.top-bar {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.top-bar h1 {
+  margin: 0;
+}
+
+.top-bar .botoes a {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.top-bar .botoes .entrar {
+  color: #B5602F;
+  border: 1px solid #B5602F;
+}
+
+.top-bar .botoes .cadastrar {
+  background: #B5602F;
+  color: white;
+}
+
+.pagina-inicial {
+  width: 100%;
+  max-width: 900px;
+}
+
+.busca {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #E6DAC5;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Inter', Arial, sans-serif;
+  margin-bottom: 18px;
+  box-sizing: border-box;
+}
+
+.categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.categorias button,
+.categorias a {
+  width: auto;
+  margin: 0;
+  padding: 9px 18px;
+  background: #FFFDF9;
+  color: #3A2E22;
+  font-weight: 500;
+  border: 1px solid #E6DAC5;
+  border-radius: 999px;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.categorias button:hover,
+.categorias a:hover {
+  background: #F5EEE3;
+}
+
+h2.secao-titulo {
+  font-family: 'Fraunces', serif;
+  font-size: 19px;
+  margin-bottom: 16px;
+}
+
+.grid-receitas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.receita-card {
+  background: #FFFDF9;
+  border: 1px solid #E6DAC5;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: left;
+  box-shadow: 0 4px 14px rgba(58, 46, 34, 0.05);
+}
+
+.receita-card .foto {
+  height: 120px;
+  background: #EFE3D0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+}
+
+.receita-card .info {
+  padding: 16px;
+}
+
+.receita-card .info h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.receita-card .info .meta {
+  color: #8A7A68;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.receita-card .info a {
+  font-size: 13px;
+}
+
+.destaque-outro {
+  display: block;
+  text-align: center;
+  background: #7C8A56;
+  color: white !important;
+  padding: 13px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* ===== Lista de receitas ===== */
+
+.filtro {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 22px;
+  border: 1px solid #E6DAC5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Inter', Arial, sans-serif;
+  background: #FFFDF9;
+}
+
+.voltar {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+/* ===== Detalhe da receita ===== */
+
+.receita-detalhe {
+  width: 100%;
+  max-width: 500px;
+}
+
+.receita-detalhe .foto-grande {
+  height: 200px;
+  background: #EFE3D0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  margin-bottom: 18px;
+}
+
+.receita-detalhe h1 {
+  text-align: left;
+  margin-bottom: 6px;
+}
+
+.receita-detalhe .meta {
+  color: #8A7A68;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.receita-detalhe h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 22px;
+}
+
+.receita-detalhe ul,
+.receita-detalhe ol {
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.acoes button {
+  width: auto;
+  flex: 1;
+  background: #FFFDF9;
+  color: #3A2E22;
+  border: 1px solid #E6DAC5;
+  font-weight: 500;
+}
+
+.acoes button.favoritado {
+  background: #B5602F;
+  color: white;
+  border-color: #B5602F;
+}
+
+/* ===== O que tenho em casa? ===== */
+
+#listaResultado {
+  display: none;
+}
+
+/* ===== Painel admin ===== */
+
+.lista-admin {
+  margin-bottom: 24px;
+}
+
+.item-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #E6DAC5;
+  font-size: 14px;
+}
+
+.item-admin span:last-child a {
+  margin-left: 10px;
+  font-size: 13px;
+}
+
+/* ===== Avaliação por estrelas ===== */
+
+.estrelas {
+  display: flex;
+  gap: 4px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.estrelas span {
+  color: #E6DAC5;
+}
+
+.estrelas span.ativa {
+  color: #D9A441;
+}
+
+/* ===== Remover dos favoritos ===== */
+
+.remover {
+  width: auto;
+  background: none;
+  border: none;
+  color: #A8402A;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0 0 0 12px;
+  cursor: pointer;
+}
+
+.fav-card {
+  width: auto;
+  background: none;
+  border: none;
+  color: #B5602F;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0 0 0 12px;
+  cursor: pointer;
+}
+
+.fav-card.favoritado {
+  color: #8F4A24;
+  font-weight: 600;
+}
