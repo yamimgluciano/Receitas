@@ -12,59 +12,30 @@
 
     <div class="top-bar">
       <h1>🍲 Receitas em Casa</h1>
-      <div class="botoes">
-        <a href="login.html" class="entrar">Login</a>
-        <a href="cadastro.html" class="cadastrar">Cadastro</a>
-        <a href="perfil.html" class="entrar">Perfil</a>
-        <a href="admin.html" class="entrar">Admin</a>
-      </div>
+      <div class="botoes" id="botoesTopo"></div>
     </div>
 
-    <input type="text" class="busca" placeholder="Pesquisar receita...">
+    <input type="text" id="buscaHome" class="busca" placeholder="Pesquisar receita... (aperte Enter)">
 
     <div class="categorias">
-      <button type="button">Café</button>
-      <button type="button">Almoço</button>
-      <button type="button">Janta</button>
-      <button type="button">Lanche</button>
-      <button type="button">Sobremesa</button>
+      <a href="lista.html?categoria=cafe">Café</a>
+      <a href="lista.html?categoria=almoco">Almoço</a>
+      <a href="lista.html?categoria=janta">Janta</a>
+      <a href="lista.html?categoria=lanche">Lanche</a>
+      <a href="lista.html?categoria=sobremesa">Sobremesa</a>
     </div>
 
     <h2 class="secao-titulo">Receitas em destaque <a href="lista.html" style="font-size: 13px;">(ver todas)</a></h2>
 
-    <!-- dados mockados: ainda não há back-end nem banco conectado -->
-    <div class="grid-receitas">
-      <div class="receita-card">
-        <div class="foto">🍳</div>
-        <div class="info">
-          <h3>Omelete de Queijo</h3>
-          <div class="meta">⏱ 10min · ★ Fácil</div>
-          <a href="detalhe.html">Ver receita</a>
-        </div>
-      </div>
-
-      <div class="receita-card">
-        <div class="foto">🍛</div>
-        <div class="info">
-          <h3>Frango ao Curry</h3>
-          <div class="meta">⏱ 45min · ★ Médio</div>
-          <a href="detalhe.html">Ver receita</a>
-        </div>
-      </div>
-
-      <div class="receita-card">
-        <div class="foto">🍝</div>
-        <div class="info">
-          <h3>Macarrão ao Molho</h3>
-          <div class="meta">⏱ 25min · ★ Fácil</div>
-          <a href="detalhe.html">Ver receita</a>
-        </div>
-      </div>
-    </div>
+    <!-- os cards de destaque são só os 3 primeiros do banco de dados mockado -->
+    <div class="grid-receitas" id="listaDestaque"></div>
 
     <a href="o-que-tenho.html" class="destaque-outro">O que tenho em casa? →</a>
 
   </div>
 
+  <script src="js/dados.js"></script>
+  <script src="js/favoritos-helper.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>
