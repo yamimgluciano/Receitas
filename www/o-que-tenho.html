@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O que tenho em casa? — Receitas em Casa</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="pagina-inicial">
+
+    <a href="index.html" class="voltar">← Voltar</a>
+
+    <h2 class="secao-titulo">O que tenho em casa?</h2>
+    <p class="subtitle">Marque os ingredientes que você possui</p>
+
+    <div class="checkboxes" id="listaIngredientes">
+      <label><input type="checkbox" value="Ovo" checked> Ovo</label>
+      <label><input type="checkbox" value="Queijo" checked> Queijo</label>
+      <label><input type="checkbox" value="Arroz" checked> Arroz</label>
+      <label><input type="checkbox" value="Tomate" checked> Tomate</label>
+      <label><input type="checkbox" value="Macarrão" checked> Macarrão</label>
+      <label><input type="checkbox" value="Leite"> Leite</label>
+      <label><input type="checkbox" value="Frango"> Frango</label>
+      <label><input type="checkbox" value="Cebola"> Cebola</label>
+      <label><input type="checkbox" value="Alho"> Alho</label>
+    </div>
+
+    <button type="button" id="btnAddIngrediente" style="margin-bottom: 16px; background: #FFFDF9; color: #3A2E22; border: 1px solid #E6DAC5;">+ Adicionar ingrediente</button>
+
+    <button type="button" id="btnBuscar">Buscar receitas compatíveis</button>
+
+    <p id="resultado" style="margin-top: 20px; font-weight: 600;"></p>
+
+    <div class="grid-receitas" id="listaResultado"></div>
+
+  </div>
+
+  <script src="js/dados.js"></script>
+  <script src="js/favoritos-helper.js"></script>
+  <script src="js/oQueTenho.js"></script>
+</body>
+</html>
