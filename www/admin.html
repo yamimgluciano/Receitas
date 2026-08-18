@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel admin — Receitas em Casa</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="pagina-inicial">
+
+    <a href="index.html" class="voltar">← Voltar</a>
+
+    <h2 class="secao-titulo">Painel admin</h2>
+    <p class="subtitle">Acesso restrito ao administrador</p>
+
+    <button type="button" id="btnAddReceita" style="margin-bottom: 20px;">+ Adicionar nova receita</button>
+
+    <select id="filtroAdmin" class="filtro">
+      <option value="todos">Todas as categorias</option>
+      <option value="cafe">Café</option>
+      <option value="almoco">Almoço</option>
+      <option value="janta">Janta</option>
+      <option value="lanche">Lanche</option>
+      <option value="sobremesa">Sobremesa</option>
+    </select>
+
+    <!-- lista montada a partir de js/dados.js -->
+    <div class="lista-admin" id="listaAdmin"></div>
+
+    <h3 style="font-family: 'Fraunces', serif; font-size: 16px; margin-bottom: 10px;">Gerenciar categorias</h3>
+    <div class="categorias" id="categoriasAdmin">
+      <button type="button">Café</button>
+      <button type="button">Almoço</button>
+      <button type="button">Janta</button>
+      <button type="button">Lanche</button>
+      <button type="button">Sobremesa</button>
+      <button type="button" id="btnAddCategoria">+</button>
+      <button type="button" id="btnRemCategoria">✕</button>
+    </div>
+
+    <p class="subtitle" style="margin-top: 24px;">Usuários: 142 &nbsp;·&nbsp; Receitas: <span id="totalReceitas"></span></p>
+
+  </div>
+
+  <script src="js/dados.js"></script>
+  <script src="js/favoritos-helper.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
