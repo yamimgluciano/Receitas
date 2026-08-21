@@ -6,9 +6,7 @@ if (!estaLogado()) {
   window.location.href = 'index.html';
 }
 
-// Monta a lista de receitas do admin a partir de js/dados.js, e permite:
-// adicionar, editar (todos os dados) e excluir — tudo simulado na tela,
-// sem salvar de verdade (não há banco de dados nessa etapa)
+// Lista e gerenciamento das receitas do administrador
 
 const listaAdmin = document.getElementById('listaAdmin');
 const filtroAdmin = document.getElementById('filtroAdmin');
@@ -46,7 +44,7 @@ filtroAdmin.addEventListener('change', function () {
   });
 });
 
-// adicionar nova receita (só nessa tela, some se recarregar a página)
+// Adicionar nova receita
 
 document.getElementById('btnAddReceita').addEventListener('click', function () {
   const nome = prompt('Nome da receita:');
@@ -72,7 +70,7 @@ document.getElementById('btnAddReceita').addEventListener('click', function () {
   document.getElementById('totalReceitas').textContent = document.querySelectorAll('.item-admin').length;
 });
 
-// editar nome, tempo, dificuldade e categoria e excluir
+// Editar ou excluir receita
 
 listaAdmin.addEventListener('click', function (e) {
   if (e.target.classList.contains('editar')) {
@@ -105,7 +103,7 @@ listaAdmin.addEventListener('click', function (e) {
   }
 });
 
-// Gerenciar categorias: adicionar uma nova, ou remover a última adicionada
+// Gerenciar categorias
 
 const btnAddCategoria = document.getElementById('btnAddCategoria');
 const btnRemCategoria = document.getElementById('btnRemCategoria');
