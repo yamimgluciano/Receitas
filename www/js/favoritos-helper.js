@@ -43,7 +43,7 @@ function salvarAvaliacao(nome, nota) {
   localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
 }
 
-// Funções para checar se a pessoa está "logada" (simulado, sem back-end)
+// Verificação de login
 
 function estaLogado() {
   return localStorage.getItem('logado') === 'true';
