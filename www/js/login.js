@@ -1,6 +1,6 @@
-// Simulação de login: qualquer e-mail/senha funciona como usuário comum
-// (com um erro na primeira tentativa, só pra parecer real). O login
-// admin@receitas.com / admin123 entra direto como administrador.
+// Login simulado. Qualquer e-mail e senha entram como usuário comum.
+// O acesso de administrador usa credenciais específicas.
+// admin@receitas.com / admin123
 
 let tentativas = 0;
 
