@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Tempo de geração: 06/11/2026 às 11:57
+-- Tempo de geração: 09/11/2026 às 12:34
 -- Versão do servidor: 8.3.0
 -- Versão do PHP: 8.3.36
 
@@ -35,22 +35,38 @@ CREATE TABLE `receitas` (
   `preparo` text NOT NULL,
   `tempo` int NOT NULL,
   `categoria` varchar(50) NOT NULL,
-  `imagem` varchar(255) NOT NULL
+  `imagem` varchar(255) NOT NULL,
+  `dificuldade` varchar(20) NOT NULL,
+  `emoji` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Despejando dados para a tabela `receitas`
+--
+
+INSERT INTO `receitas` (`id`, `nome`, `descricao`, `ingredientes`, `preparo`, `tempo`, `categoria`, `imagem`, `dificuldade`, `emoji`) VALUES
+(1, 'Panquecas de Aveia', 'Panquecas simples e rápidas para o café da manhã.', 'Ovo, Leite, aveia', 'Misture os ingredientes e coloque pequenas porções em uma frigideira. Doure dos dois lados', 15, 'cafe', '', 'Fácil', '🥞');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuários`
+-- Estrutura para tabela `usuarios`
 --
 
-CREATE TABLE `usuários` (
+CREATE TABLE `usuarios` (
   `id` int NOT NULL,
   `nome` varchar(100) NOT NULL,
   `email` varchar(150) NOT NULL,
   `senha` varchar(255) NOT NULL,
   `tipo` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Despejando dados para a tabela `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `tipo`) VALUES
+(1, 'yasmim', 'yasmimluciano01@gmail.com', '$2y$10$.7SW0Jq.9n7xPBoQLX.sPeQ/shsrivzUFiGOxC3IhM/TUwc8AJ17i', 'admin');
 
 --
 -- Índices para tabelas despejadas
@@ -63,9 +79,9 @@ ALTER TABLE `receitas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices de tabela `usuários`
+-- Índices de tabela `usuarios`
 --
-ALTER TABLE `usuários`
+ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
@@ -77,13 +93,13 @@ ALTER TABLE `usuários`
 -- AUTO_INCREMENT de tabela `receitas`
 --
 ALTER TABLE `receitas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de tabela `usuários`
+-- AUTO_INCREMENT de tabela `usuarios`
 --
-ALTER TABLE `usuários`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `usuarios`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
