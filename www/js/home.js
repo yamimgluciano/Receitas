@@ -16,9 +16,12 @@ if (estaLogado()) {
 // e conecta a busca da home com a lista completa
 
 const listaDestaque = document.getElementById('listaDestaque');
-const destaques = receitas.slice(0, 3);
+fetch("buscar_receitas.php")
+  .then(resposta => resposta.json())
+  .then(receitasBanco => {
+    const destaques = receitasBanco.slice(0, 3);
 
-destaques.forEach(function (receita) {
+    destaques.forEach(function (receita) {
   const favoritado = getFavoritos().includes(receita.nome);
 
   const card = document.createElement('div');
@@ -32,8 +35,9 @@ destaques.forEach(function (receita) {
     '<button type="button" class="fav-card' + (favoritado ? ' favoritado' : '') + '" data-nome="' + receita.nome + '">' + (favoritado ? '♥' : '♡') + ' salvar</button>' +
     '</div>';
 
-  listaDestaque.appendChild(card);
-});
+    listaDestaque.appendChild(card);
+    });
+  });
 
 listaDestaque.addEventListener('click', function (e) {
   if (e.target.classList.contains('fav-card')) {

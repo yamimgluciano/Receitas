@@ -47,7 +47,13 @@ function aplicarFiltros() {
   });
 }
 
-mostrarReceitas();
+fetch('buscar_receitas.php')
+  .then(resposta => resposta.json())
+  .then(receitasBanco => {
+    receitas = receitasBanco;
+    mostrarReceitas();
+    aplicarFiltros();
+  });
 
 busca.addEventListener('input', aplicarFiltros);
 filtro.addEventListener('change', aplicarFiltros);
@@ -81,5 +87,3 @@ if (parametros.get('categoria')) {
 if (parametros.get('busca')) {
   busca.value = parametros.get('busca');
 }
-
-aplicarFiltros();
