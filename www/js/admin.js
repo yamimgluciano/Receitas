@@ -46,29 +46,53 @@ filtroAdmin.addEventListener('change', function () {
 
 // Adicionar nova receita
 
+
+// Adicionar nova receita
+
 document.getElementById('btnAddReceita').addEventListener('click', function () {
   const nome = prompt('Nome da receita:');
   if (!nome) return;
 
-  const tempo = prompt('Tempo de preparo (ex: 20min):', '20min') || '20min';
-  const dificuldade = prompt('Dificuldade (Fácil, Médio ou Difícil):', 'Fácil') || 'Fácil';
-  const categoria = prompt('Categoria (cafe, almoco, janta, lanche ou sobremesa):', 'almoco') || 'almoco';
-  const ingredientesTexto = prompt('Ingredientes (separados por vírgula):', '') || '';
-  const modoPreparo = prompt('Modo de preparo:', '') || '';
+  const tempo = prompt('Tempo de preparo (em minutos):', '20');
+  if (!tempo) return;
 
-  const novaReceita = {
-    nome: nome,
-    tempo: tempo,
-    dificuldade: dificuldade,
-    categoria: categoria,
-    emoji: '🍽️',
-    ingredientes: ingredientesTexto.split(',').map(function (i) { return i.trim(); }).filter(function (i) { return i; }),
-    modoPreparo: modoPreparo
-  };
+  const dificuldade = prompt('Dificuldade (Fácil, Médio ou Difícil):', 'Fácil');
+  if (!dificuldade) return;
 
-  listaAdmin.appendChild(criarItemAdmin(novaReceita));
-  document.getElementById('totalReceitas').textContent = document.querySelectorAll('.item-admin').length;
+  const categoria = prompt('Categoria (cafe, almoco, janta, lanche ou sobremesa):', 'almoco');
+  if (!categoria) return;
+
+  const ingredientes = prompt('Ingredientes (separados por vírgula):');
+  if (!ingredientes) return;
+
+  const preparo = prompt('Modo de preparo:');
+  if (!preparo) return;
+
+  const dados = new FormData();
+  dados.append('cadastrar', '1');
+  dados.append('nome', nome);
+  dados.append('tempo', tempo);
+  dados.append('dificuldade', dificuldade);
+  dados.append('categoria', categoria);
+  dados.append('ingredientes', ingredientes);
+  dados.append('preparo', preparo);
+
+  fetch('salvar_receita.php', {
+    method: 'POST',
+    body: dados
+  })
+  .then(function (resposta) {
+    return resposta.text();
+  })
+  .then(function (mensagem) {
+    alert(mensagem);
+
+    if (mensagem === 'Receita cadastrada com sucesso!') {
+      location.reload();
+    }
+  });
 });
+
 
 // Editar ou excluir receita
 
