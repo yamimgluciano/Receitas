@@ -14,6 +14,7 @@ const filtroAdmin = document.getElementById('filtroAdmin');
 function criarItemAdmin(receita) {
   const item = document.createElement('div');
   item.className = 'item-admin ' + receita.categoria;
+  item.dataset.id = receita.id;
   item.innerHTML =
     '<span>' +
     '<span class="nome-receita">' + receita.nome + '</span><br>' +
@@ -23,15 +24,25 @@ function criarItemAdmin(receita) {
   return item;
 }
 
+
 function mostrarLista() {
-  listaAdmin.innerHTML = '';
-  receitas.forEach(function (receita) {
-    listaAdmin.appendChild(criarItemAdmin(receita));
-  });
-  document.getElementById('totalReceitas').textContent = receitas.length;
+  fetch('buscar_receitas.php')
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (receitasBanco) {
+      listaAdmin.innerHTML = '';
+
+      receitasBanco.forEach(function (receita) {
+        listaAdmin.appendChild(criarItemAdmin(receita));
+      });
+
+      document.getElementById('totalReceitas').textContent = receitasBanco.length;
+    });
 }
 
 mostrarLista();
+
 
 filtroAdmin.addEventListener('change', function () {
   const categoria = filtroAdmin.value;
@@ -120,12 +131,37 @@ listaAdmin.addEventListener('click', function (e) {
     item.dataset.modoPreparo = novoModoPreparo;
   }
 
-  if (e.target.classList.contains('excluir')) {
-    e.preventDefault();
-    e.target.closest('.item-admin').remove();
-    document.getElementById('totalReceitas').textContent = document.querySelectorAll('.item-admin').length;
+  
+if (e.target.classList.contains('excluir')) {
+  e.preventDefault();
+
+  const item = e.target.closest('.item-admin');
+  const id = item.dataset.id;
+  alert('ID da receita: ' + id);
+
+  if (confirm('Deseja realmente excluir esta receita?')) {
+    const dados = new FormData();
+    dados.append('excluir', '1');
+    dados.append('id', id);
+
+    fetch('excluir_receita.php', {
+      method: 'POST',
+      body: dados
+    })
+    .then(function (resposta) {
+      return resposta.text();
+    })
+    .then(function (mensagem) {
+      alert(mensagem);
+
+      if (mensagem === 'Receita excluída com sucesso!') {
+        mostrarLista();
+      }
+    });
   }
+}
 });
+
 
 // Gerenciar categorias
 
