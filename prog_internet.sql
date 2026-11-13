@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Tempo de geração: 09/11/2026 às 12:34
+-- Tempo de geração: 13/11/2026 às 11:41
 -- Versão do servidor: 8.3.0
 -- Versão do PHP: 8.3.36
 
@@ -45,7 +45,8 @@ CREATE TABLE `receitas` (
 --
 
 INSERT INTO `receitas` (`id`, `nome`, `descricao`, `ingredientes`, `preparo`, `tempo`, `categoria`, `imagem`, `dificuldade`, `emoji`) VALUES
-(1, 'Panquecas de Aveia', 'Panquecas simples e rápidas para o café da manhã.', 'Ovo, Leite, aveia', 'Misture os ingredientes e coloque pequenas porções em uma frigideira. Doure dos dois lados', 15, 'cafe', '', 'Fácil', '🥞');
+(1, 'Panquecas de Aveia', 'Panquecas simples e rápidas para o café da manhã.', 'Ovo, Leite, aveia', 'Misture os ingredientes e coloque pequenas porções em uma frigideira. Doure dos dois lados', 15, 'cafe', '', 'Fácil', '🥞'),
+(3, 'carne', '', 'carne,cebola,sal', 'bota tudo na panela', 20, 'almoco', '', 'Fácil', '🍽️');
 
 -- --------------------------------------------------------
 
@@ -93,7 +94,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `receitas`
 --
 ALTER TABLE `receitas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
