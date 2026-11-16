@@ -1,9 +1,7 @@
-// Só acessa essa página quem estiver "logado" (simulado)
+
 if (!estaLogado()) {
   window.location.href = 'login.html';
 }
-
-// Monta a lista de favoritos a partir do que está salvo no localStorage
 
 const listaFavoritos = document.getElementById('listaFavoritos');
 
@@ -16,27 +14,44 @@ function mostrarFavoritos() {
     return;
   }
 
-  favoritos.forEach(function (nome) {
-    let receita = null;
-    for (let i = 0; i < receitas.length; i++) {
-      if (receitas[i].nome === nome) {
-        receita = receitas[i];
-      }
-    }
-    if (!receita) return;
+  fetch('buscar_receitas.php')
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (receitasBanco) {
+      let total = 0;
 
-    const card = document.createElement('div');
-    card.className = 'receita-card';
-    card.innerHTML =
-      '<div class="foto">' + receita.emoji + '</div>' +
-      '<div class="info">' +
-      '<h3>♥ ' + receita.nome + '</h3>' +
-      '<div class="meta">⏱ ' + receita.tempo + ' · ★ ' + receita.dificuldade + '</div>' +
-      '<a href="detalhe.html">Ver receita</a>' +
-      '<button type="button" class="remover" data-nome="' + receita.nome + '">✕ remover</button>' +
-      '</div>';
-    listaFavoritos.appendChild(card);
-  });
+      favoritos.forEach(function (nome) {
+        const receita = receitasBanco.find(function (item) {
+          return item.nome === nome;
+        });
+
+        if (!receita) return;
+
+        total++;
+
+        const card = document.createElement('div');
+        card.className = 'receita-card';
+
+        card.innerHTML =
+          '<div class="foto">' + receita.emoji + '</div>' +
+          '<div class="info">' +
+          '<h3>♥ ' + receita.nome + '</h3>' +
+          '<div class="meta">⏱ ' + receita.tempo + ' · ★ ' + receita.dificuldade + '</div>' +
+          '<a href="detalhe.html?id=' + receita.id + '">Ver receita</a>' +
+          '<button type="button" class="remover" data-nome="' + receita.nome + '">✕ remover</button>' +
+          '</div>';
+
+        listaFavoritos.appendChild(card);
+      });
+
+      if (total === 0) {
+        listaFavoritos.innerHTML = '<p>Nenhuma receita favorita encontrada no banco de dados.</p>';
+      }
+    })
+    .catch(function () {
+      listaFavoritos.innerHTML = '<p>Erro ao carregar favoritos.</p>';
+    });
 }
 
 mostrarFavoritos();

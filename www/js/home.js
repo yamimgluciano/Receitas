@@ -31,7 +31,7 @@ fetch("buscar_receitas.php")
     '<div class="info">' +
     '<h3>' + receita.nome + '</h3>' +
     '<div class="meta">⏱ ' + receita.tempo + ' · ★ ' + receita.dificuldade + '</div>' +
-    '<a href="detalhe.html">Ver receita</a>' +
+    '<a href="detalhe.html?id=' + receita.id + '">Ver receita</a>' +
     '<button type="button" class="fav-card' + (favoritado ? ' favoritado' : '') + '" data-nome="' + receita.nome + '">' + (favoritado ? '♥' : '♡') + ' salvar</button>' +
     '</div>';
 
