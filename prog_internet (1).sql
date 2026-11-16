@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Tempo de geração: 11/11/2026 às 12:25
+-- Tempo de geração: 16/11/2026 às 12:35
 -- Versão do servidor: 8.3.0
 -- Versão do PHP: 8.3.36
 
@@ -66,7 +66,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `tipo`) VALUES
-(1, 'yasmim', 'yasmimluciano01@gmail.com', '$2y$10$.7SW0Jq.9n7xPBoQLX.sPeQ/shsrivzUFiGOxC3IhM/TUwc8AJ17i', 'admin');
+(1, 'yasmim', 'yasmimluciano01@gmail.com', '$2y$10$.7SW0Jq.9n7xPBoQLX.sPeQ/shsrivzUFiGOxC3IhM/TUwc8AJ17i', 'admin'),
+(2, 'anavarol', 'anavarol@gmail.com', '$2y$10$GSUTd4IPttI8/l/Rq78OdODPtKzpC1RgFObZETg9JardrgJs0LDjC', 'usuario');
 
 --
 -- Índices para tabelas despejadas
@@ -93,13 +94,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `receitas`
 --
 ALTER TABLE `receitas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
