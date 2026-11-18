@@ -1,4 +1,3 @@
-
 if (!estaLogado()) {
   window.location.href = 'login.html';
 }
@@ -6,24 +5,32 @@ if (!estaLogado()) {
 const listaFavoritos = document.getElementById('listaFavoritos');
 
 function mostrarFavoritos() {
-  listaFavoritos.innerHTML = '';
-  const favoritos = getFavoritos();
+  listaFavoritos.innerHTML = '<p>Carregando favoritos...</p>';
 
-  if (favoritos.length === 0) {
-    listaFavoritos.innerHTML = '<p>Você ainda não salvou nenhuma receita.</p>';
-    return;
-  }
-
-  fetch('buscar_receitas.php')
-    .then(function (resposta) {
+  Promise.all([
+    fetch('listar_favoritos.php').then(function (resposta) {
+      if (!resposta.ok) throw new Error('Erro ao buscar favoritos.');
+      return resposta.json();
+    }),
+    fetch('buscar_receitas.php').then(function (resposta) {
+      if (!resposta.ok) throw new Error('Erro ao buscar receitas.');
       return resposta.json();
     })
-    .then(function (receitasBanco) {
+  ])
+    .then(function (resultados) {
+      const favoritos = resultados[0];
+      const receitasBanco = resultados[1];
+
+      if (!Array.isArray(favoritos) || !Array.isArray(receitasBanco)) {
+        throw new Error('Dados inválidos.');
+      }
+
+      listaFavoritos.innerHTML = '';
       let total = 0;
 
-      favoritos.forEach(function (nome) {
+      favoritos.forEach(function (id) {
         const receita = receitasBanco.find(function (item) {
-          return item.nome === nome;
+          return Number(item.id) === Number(id);
         });
 
         if (!receita) return;
@@ -33,20 +40,42 @@ function mostrarFavoritos() {
         const card = document.createElement('div');
         card.className = 'receita-card';
 
-        card.innerHTML =
-          '<div class="foto">' + receita.emoji + '</div>' +
-          '<div class="info">' +
-          '<h3>♥ ' + receita.nome + '</h3>' +
-          '<div class="meta">⏱ ' + receita.tempo + ' · ★ ' + receita.dificuldade + '</div>' +
-          '<a href="detalhe.html?id=' + receita.id + '">Ver receita</a>' +
-          '<button type="button" class="remover" data-nome="' + receita.nome + '">✕ remover</button>' +
-          '</div>';
+        const foto = document.createElement('div');
+        foto.className = 'foto';
+        foto.textContent = receita.emoji || '🍽️';
 
+        const info = document.createElement('div');
+        info.className = 'info';
+
+        const titulo = document.createElement('h3');
+        titulo.textContent = '♥ ' + receita.nome;
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.textContent = '⏱ ' + receita.tempo + ' · ★ ' + receita.dificuldade;
+
+        const link = document.createElement('a');
+        link.href = 'detalhe.html?id=' + receita.id;
+        link.textContent = 'Ver receita';
+
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.className = 'remover';
+        botao.dataset.id = receita.id;
+        botao.textContent = '✕ remover';
+
+        info.appendChild(titulo);
+        info.appendChild(meta);
+        info.appendChild(link);
+        info.appendChild(botao);
+
+        card.appendChild(foto);
+        card.appendChild(info);
         listaFavoritos.appendChild(card);
       });
 
       if (total === 0) {
-        listaFavoritos.innerHTML = '<p>Nenhuma receita favorita encontrada no banco de dados.</p>';
+        listaFavoritos.innerHTML = '<p>Você ainda não salvou nenhuma receita.</p>';
       }
     })
     .catch(function () {
@@ -57,8 +86,30 @@ function mostrarFavoritos() {
 mostrarFavoritos();
 
 listaFavoritos.addEventListener('click', function (e) {
-  if (e.target.classList.contains('remover')) {
-    alternarFavorito(e.target.dataset.nome);
-    mostrarFavoritos();
-  }
+  if (!e.target.classList.contains('remover')) return;
+
+  const botao = e.target;
+  const dados = new FormData();
+  dados.append('receita_id', botao.dataset.id);
+
+  botao.disabled = true;
+
+  fetch('alternar_favorito.php', {
+    method: 'POST',
+    body: dados
+  })
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (resultado) {
+      if (!resultado.sucesso || resultado.favoritado) {
+        throw new Error('Não foi possível remover.');
+      }
+
+      mostrarFavoritos();
+    })
+    .catch(function () {
+      alert('Erro ao remover favorito.');
+      botao.disabled = false;
+    });
 });

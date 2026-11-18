@@ -11,7 +11,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 $id = $_SESSION["usuario_id"];
 
-$sql = $conexao->prepare("SELECT nome, email, tipo FROM usuarios WHERE id = ?");
+$sql = $conexao->prepare("SELECT nome, email, tipo, sem_lactose, vegano, vegetariano, sem_gluten FROM usuarios WHERE id = ?");
 $sql->bind_param("i", $id);
 $sql->execute();
 

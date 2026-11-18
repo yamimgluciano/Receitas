@@ -23,11 +23,25 @@ function marcarEstrelas(nota) {
 function carregarFavoritoEAvaliacao() {
   if (!estaLogado()) return;
 
-  if (getFavoritos().includes(nomeReceita)) {
-    btnFavoritar.classList.add('favoritado');
-    btnFavoritar.textContent = '♥ Favoritado';
-  }
+  fetch('consultar_favorito.php?receita_id=' + encodeURIComponent(idReceita))
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (resultado) {
+      if (resultado.favoritado) {
+        btnFavoritar.classList.add('favoritado');
+        btnFavoritar.textContent = '♥ Favoritado';
+      } else {
+        btnFavoritar.classList.remove('favoritado');
+        btnFavoritar.textContent = '♡ Favoritar';
+      }
+    })
+    .catch(function () {
+      console.log('Erro ao consultar favorito.');
+    });
 
+
+ 
   const avaliacoesSalvas = getAvaliacoes();
 
   if (avaliacoesSalvas[nomeReceita]) {
@@ -90,24 +104,6 @@ if (idReceita) {
   document.getElementById('nomeReceita').textContent = 'Nenhuma receita selecionada.';
 }
 
-btnFavoritar.addEventListener('click', function () {
-  if (!estaLogado()) {
-    window.location.href = 'login.html';
-    return;
-  }
-
-  if (!nomeReceita) return;
-
-  alternarFavorito(nomeReceita);
-
-  if (btnFavoritar.classList.contains('favoritado')) {
-    btnFavoritar.classList.remove('favoritado');
-    btnFavoritar.textContent = '♡ Favoritar';
-  } else {
-    btnFavoritar.classList.add('favoritado');
-    btnFavoritar.textContent = '♥ Favoritado';
-  }
-});
 
 estrelas.forEach(function (estrela) {
   estrela.addEventListener('click', function () {
@@ -127,13 +123,80 @@ btnSalvarAvaliacao.addEventListener('click', function () {
     return;
   }
 
-  if (!nomeReceita) return;
-
-  if (notaEscolhida === 0) {
+  if (!idReceita || notaEscolhida === 0) {
     msgAvaliacao.textContent = 'Escolha uma nota antes de salvar.';
     return;
   }
 
-  salvarAvaliacao(nomeReceita, notaEscolhida);
-  msgAvaliacao.textContent = 'Avaliação salva! Você deu ' + notaEscolhida + ' estrela(s).';
+  const dados = new FormData();
+  dados.append('receita_id', idReceita);
+  dados.append('nota', notaEscolhida);
+
+  btnSalvarAvaliacao.disabled = true;
+
+  fetch('salvar_avaliacao.php', {
+    method: 'POST',
+    body: dados
+  })
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (resultado) {
+      if (!resultado.sucesso) {
+        throw new Error(resultado.erro || 'Erro ao salvar.');
+      }
+
+      msgAvaliacao.textContent =
+        'Avaliação salva! Você deu ' + notaEscolhida + ' estrela(s).';
+    })
+    .catch(function () {
+      msgAvaliacao.textContent = 'Não foi possível salvar a avaliação.';
+    })
+    .finally(function () {
+      btnSalvarAvaliacao.disabled = false;
+    });
 });
+
+
+
+btnFavoritar.addEventListener('click', function () {
+  if (!estaLogado()) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  if (!idReceita) return;
+
+  const dados = new FormData();
+  dados.append('receita_id', idReceita);
+
+  btnFavoritar.disabled = true;
+
+  fetch('alternar_favorito.php', {
+    method: 'POST',
+    body: dados
+  })
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (resultado) {
+      if (!resultado.sucesso) {
+        throw new Error(resultado.erro || 'Erro ao salvar favorito.');
+      }
+
+      if (resultado.favoritado) {
+        btnFavoritar.classList.add('favoritado');
+        btnFavoritar.textContent = '♥ Favoritado';
+      } else {
+        btnFavoritar.classList.remove('favoritado');
+        btnFavoritar.textContent = '♡ Favoritar';
+      }
+    })
+    .catch(function () {
+      alert('Não foi possível salvar o favorito.');
+    })
+    .finally(function () {
+      btnFavoritar.disabled = false;
+    });
+});
+
