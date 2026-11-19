@@ -136,3 +136,30 @@ btnEditarPerfil.addEventListener('click', function () {
       btnEditarPerfil.disabled = false;
     });
 });
+
+
+const btnSair = document.getElementById('btnSair');
+
+if (btnSair) {
+  btnSair.addEventListener('click', function () {
+    fetch('logout.php', {
+      method: 'POST'
+    })
+      .then(function (resposta) {
+        return resposta.json();
+      })
+      .then(function (resultado) {
+        if (resultado.sucesso) {
+          localStorage.removeItem('logado');
+          localStorage.removeItem('admin');
+
+          window.location.href = 'index.html';
+        } else {
+          alert('Não foi possível sair da conta.');
+        }
+      })
+      .catch(function () {
+        alert('Erro ao sair da conta.');
+      });
+  });
+}

@@ -1,4 +1,3 @@
-
 const parametros = new URLSearchParams(window.location.search);
 const idReceita = parametros.get('id');
 
@@ -23,6 +22,7 @@ function marcarEstrelas(nota) {
 function carregarFavoritoEAvaliacao() {
   if (!estaLogado()) return;
 
+  // Consultar favorito no banco de dados
   fetch('consultar_favorito.php?receita_id=' + encodeURIComponent(idReceita))
     .then(function (resposta) {
       return resposta.json();
@@ -40,15 +40,25 @@ function carregarFavoritoEAvaliacao() {
       console.log('Erro ao consultar favorito.');
     });
 
+  // Consultar avaliação no banco de dados
+  fetch('consultar_avaliacao.php?receita_id=' + encodeURIComponent(idReceita))
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (resultado) {
+      notaEscolhida = Number(resultado.nota) || 0;
+      marcarEstrelas(notaEscolhida);
 
- 
-  const avaliacoesSalvas = getAvaliacoes();
-
-  if (avaliacoesSalvas[nomeReceita]) {
-    notaEscolhida = avaliacoesSalvas[nomeReceita];
-    marcarEstrelas(notaEscolhida);
-    msgAvaliacao.textContent = 'Sua avaliação: ' + notaEscolhida + ' estrela(s)';
-  }
+      if (notaEscolhida > 0) {
+        msgAvaliacao.textContent =
+          'Sua avaliação: ' + notaEscolhida + ' estrela(s)';
+      } else {
+        msgAvaliacao.textContent = '';
+      }
+    })
+    .catch(function () {
+      console.log('Erro ao consultar avaliação.');
+    });
 }
 
 if (idReceita) {
@@ -76,6 +86,57 @@ if (idReceita) {
         '⏱ ' + receita.tempo + ' · 📂 ' + receita.categoria +
         ' · ★ ' + receita.dificuldade;
 
+      // Informações de cozimento
+      const metaReceita = document.getElementById('metaReceita');
+
+      const informacoes = document.createElement('div');
+      informacoes.style.marginTop = '16px';
+      informacoes.style.marginBottom = '24px';
+      informacoes.style.fontSize = '15px';
+      informacoes.style.lineHeight = '1.8';
+      informacoes.style.color = '#8A7A68';
+
+      function adicionarInformacao(titulo, valor) {
+        const linha = document.createElement('div');
+
+        const nome = document.createElement('strong');
+        nome.textContent = titulo + ': ';
+        nome.style.fontWeight = '600';
+
+        const texto = document.createElement('span');
+        texto.textContent = valor;
+
+        linha.appendChild(nome);
+        linha.appendChild(texto);
+        informacoes.appendChild(linha);
+      }
+
+      if (receita.tempo_cozimento) {
+        adicionarInformacao(
+          'Tempo de cozimento',
+          receita.tempo_cozimento + ' minutos'
+        );
+      }
+
+      if (receita.temperatura) {
+        adicionarInformacao(
+          'Temperatura',
+          receita.temperatura + ' °C'
+        );
+      }
+
+      if (receita.equipamento) {
+        const equipamento = receita.equipamento.charAt(0).toUpperCase() +
+          receita.equipamento.slice(1);
+
+        adicionarInformacao('Equipamento', equipamento);
+      }
+
+      if (informacoes.children.length > 0) {
+        metaReceita.insertAdjacentElement('afterend', informacoes);
+      }
+
+      // Ingredientes
       const listaIngredientes = document.getElementById('ingredientesReceita');
 
       receita.ingredientes.forEach(function (ingrediente) {
@@ -84,6 +145,7 @@ if (idReceita) {
         listaIngredientes.appendChild(li);
       });
 
+      // Modo de preparo
       const listaPreparo = document.getElementById('preparoReceita');
       const etapas = receita.preparo.split('\n');
 
@@ -104,6 +166,7 @@ if (idReceita) {
   document.getElementById('nomeReceita').textContent = 'Nenhuma receita selecionada.';
 }
 
+// Avaliação por estrelas
 
 estrelas.forEach(function (estrela) {
   estrela.addEventListener('click', function () {
@@ -157,7 +220,7 @@ btnSalvarAvaliacao.addEventListener('click', function () {
     });
 });
 
-
+// Favoritar receita
 
 btnFavoritar.addEventListener('click', function () {
   if (!estaLogado()) {
@@ -199,4 +262,3 @@ btnFavoritar.addEventListener('click', function () {
       btnFavoritar.disabled = false;
     });
 });
-

@@ -1,89 +1,160 @@
-// Monta os cards de receita na tela e permite filtrar por texto,
-// categoria, e favoritar/desfavoritar cada uma
-
 const listaReceitas = document.getElementById('listaReceitas');
 const busca = document.getElementById('busca');
 const filtro = document.getElementById('filtroCategoria');
 
-function criarCard(receita) {
-  const favoritado = getFavoritos().includes(receita.nome);
+let receitasBanco = [];
 
+const parametros = new URLSearchParams(window.location.search);
+const categoriaInicial = parametros.get('categoria');
+const buscaInicial = parametros.get('busca');
+
+if (buscaInicial) {
+  busca.value = buscaInicial;
+}
+
+// Cria os cards das receitas
+function criarCard(receita) {
   const card = document.createElement('div');
-  card.className = 'receita-card ' + receita.categoria;
+  card.className = 'receita-card';
+
   card.innerHTML =
     '<div class="foto">' + receita.emoji + '</div>' +
     '<div class="info">' +
     '<h3>' + receita.nome + '</h3>' +
     '<div class="meta">⏱ ' + receita.tempo + ' · ★ ' + receita.dificuldade + '</div>' +
     '<a href="detalhe.html?id=' + receita.id + '">Ver receita</a>' +
-    '<button type="button" class="fav-card' + (favoritado ? ' favoritado' : '') + '" data-nome="' + receita.nome + '">' + (favoritado ? '♥' : '♡') + ' salvar</button>' +
     '</div>';
 
   return card;
 }
 
+// Mostra as receitas de acordo com a busca e a categoria
 function mostrarReceitas() {
   listaReceitas.innerHTML = '';
-  receitas.forEach(function (receita) {
+
+  const texto = busca.value.toLowerCase().trim();
+  const categoria = filtro.value.toLowerCase();
+
+  const receitasFiltradas = receitasBanco.filter(function (receita) {
+    const nomeReceita = receita.nome.toLowerCase();
+    const categoriaReceita = String(receita.categoria).toLowerCase().trim();
+
+    const combinaTexto = nomeReceita.includes(texto);
+    const combinaCategoria =
+      categoria === 'todos' || categoriaReceita === categoria;
+
+    return combinaTexto && combinaCategoria;
+  });
+
+  if (receitasFiltradas.length === 0) {
+    const mensagem = document.createElement('div');
+
+    mensagem.style.gridColumn = '1 / -1';
+    mensagem.style.textAlign = 'center';
+    mensagem.style.padding = '45px 20px';
+    mensagem.style.color = '#8A7A68';
+
+    const titulo = document.createElement('h3');
+    titulo.style.marginBottom = '10px';
+    titulo.style.color = '#3A2E22';
+
+    const descricao = document.createElement('p');
+
+    if (texto !== '') {
+      titulo.textContent = 'Nenhuma receita encontrada';
+      descricao.textContent =
+        'Não encontramos receitas com esse nome. Tente pesquisar de outra forma.';
+    } else if (categoria !== 'todos') {
+      titulo.textContent = 'Nenhuma receita nesta categoria';
+      descricao.textContent =
+        'Ainda não temos receitas por aqui. Volte em breve para conferir as novidades!';
+    } else {
+      titulo.textContent = 'Nenhuma receita cadastrada';
+      descricao.textContent =
+        'Ainda não temos receitas disponíveis. Volte em breve!';
+    }
+
+    mensagem.appendChild(titulo);
+    mensagem.appendChild(descricao);
+    listaReceitas.appendChild(mensagem);
+
+    return;
+  }
+
+  receitasFiltradas.forEach(function (receita) {
     listaReceitas.appendChild(criarCard(receita));
   });
 }
 
-function aplicarFiltros() {
-  const texto = busca.value.toLowerCase();
-  const categoria = filtro.value;
-  const cards = document.querySelectorAll('.receita-card');
+// Carrega as categorias cadastradas no MySQL
+function carregarCategorias() {
+  return fetch('buscar_categorias.php')
+    .then(function (resposta) {
+      if (!resposta.ok) {
+        throw new Error('Erro ao buscar categorias.');
+      }
 
-  cards.forEach(function (card) {
-    const nome = card.querySelector('h3').textContent.toLowerCase();
-    const combinaCategoria = categoria === 'todos' || card.classList.contains(categoria);
-    const combinaTexto = nome.includes(texto);
+      return resposta.json();
+    })
+    .then(function (categorias) {
+      filtro.innerHTML = '';
 
-    if (combinaCategoria && combinaTexto) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
-  });
+      const todas = document.createElement('option');
+      todas.value = 'todos';
+      todas.textContent = 'Todas as categorias';
+      filtro.appendChild(todas);
+
+      categorias.forEach(function (categoria) {
+        const opcao = document.createElement('option');
+        opcao.value = categoria.slug;
+        opcao.textContent = categoria.nome;
+
+        filtro.appendChild(opcao);
+      });
+
+      if (categoriaInicial) {
+        filtro.value = categoriaInicial;
+      }
+    });
 }
 
-fetch('buscar_receitas.php')
-  .then(resposta => resposta.json())
-  .then(receitasBanco => {
-    receitas = receitasBanco;
+// Carrega as receitas cadastradas no MySQL
+function carregarReceitas() {
+  return fetch('buscar_receitas.php')
+    .then(function (resposta) {
+      if (!resposta.ok) {
+        throw new Error('Erro ao buscar receitas.');
+      }
+
+      return resposta.json();
+    })
+    .then(function (resultado) {
+      receitasBanco = resultado;
+    });
+}
+
+// Carrega os dados antes de mostrar as receitas
+Promise.all([
+  carregarCategorias(),
+  carregarReceitas()
+])
+  .then(function () {
     mostrarReceitas();
-    aplicarFiltros();
+  })
+  .catch(function (erro) {
+    console.log('Erro ao carregar dados:', erro);
+
+    listaReceitas.innerHTML = '';
+
+    const mensagem = document.createElement('p');
+    mensagem.textContent =
+      'Não foi possível carregar as receitas. Tente atualizar a página.';
+    mensagem.style.gridColumn = '1 / -1';
+    mensagem.style.textAlign = 'center';
+
+    listaReceitas.appendChild(mensagem);
   });
 
-busca.addEventListener('input', aplicarFiltros);
-filtro.addEventListener('change', aplicarFiltros);
-
-// botão de salvar/favoritar em cada card
-listaReceitas.addEventListener('click', function (e) {
-  if (e.target.classList.contains('fav-card')) {
-    if (!estaLogado()) {
-      window.location.href = 'login.html';
-      return;
-    }
-    const nome = e.target.dataset.nome;
-    alternarFavorito(nome);
-
-    if (e.target.classList.contains('favoritado')) {
-      e.target.classList.remove('favoritado');
-      e.target.textContent = '♡ salvar';
-    } else {
-      e.target.classList.add('favoritado');
-      e.target.textContent = '♥ salvar';
-    }
-  }
-});
-
-// se a pessoa veio da home com categoria ou busca escolhida, aplica direto
-const parametros = new URLSearchParams(window.location.search);
-
-if (parametros.get('categoria')) {
-  filtro.value = parametros.get('categoria');
-}
-if (parametros.get('busca')) {
-  busca.value = parametros.get('busca');
-}
+// Atualiza a lista quando o usuário pesquisa ou troca a categoria
+busca.addEventListener('input', mostrarReceitas);
+filtro.addEventListener('change', mostrarReceitas);

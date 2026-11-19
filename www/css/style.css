@@ -420,3 +420,25 @@ h2.secao-titulo {
   color: #8F4A24;
   font-weight: 600;
 }
+
+
+/* Textos dos detalhes da receita */
+
+.receita-detalhe #metaReceita + div {
+  color: #3A2E22 !important;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 16px !important;
+  line-height: 1.8;
+}
+
+.receita-detalhe #metaReceita + div strong {
+  color: #3A2E22;
+}
+
+.receita-detalhe #ingredientesReceita,
+.receita-detalhe #preparoReceita {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 16px;
+  color: #3A2E22;
+  line-height: 1.8;
+}
