@@ -12,8 +12,6 @@
     <h1>🍲 Receitas em Casa</h1>
     <p class="subtitle">Entre para ver suas receitas salvas</p>
 
-    <!-- Tela simulada: não valida usuário/senha de verdade,
-         só navega para a página inicial como se o login tivesse funcionado -->
     <label for="email">E-mail</label>
     <input type="email" id="email" placeholder="seuemail@exemplo.com">
 
@@ -26,6 +24,53 @@
     <p class="link">Não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
   </div>
 
-  <script src="js/lista.js?v=3"></script>
+  <script>
+    document.getElementById('entrar').addEventListener('click', function () {
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value;
+      const mensagemErro = document.getElementById('mensagemErro');
+
+      mensagemErro.textContent = '';
+
+      if (!email || !senha) {
+        mensagemErro.textContent = 'Preencha todos os campos.';
+        return;
+      }
+
+      const dados = new FormData();
+      dados.append('email', email);
+      dados.append('senha', senha);
+
+      fetch('processa_login.php', {
+        method: 'POST',
+        body: dados
+      })
+        .then(function (resposta) {
+          return resposta.text();
+        })
+        .then(function (mensagem) {
+          mensagem = mensagem.trim();
+
+          if (mensagem === 'Login realizado com sucesso!admin' ||
+              mensagem === 'Login realizado com sucesso!usuario') {
+            return fetch('verificar_sessao.php', { cache: 'no-store', credentials: 'same-origin' })
+              .then(function (resposta) { return resposta.json(); })
+              .then(function (sessao) {
+                if (!sessao.logado) {
+                  mensagemErro.textContent = 'Login aceito, mas a sessão não foi mantida.';
+                  return;
+                }
+                window.location.href = sessao.admin ? 'admin.html' : 'index.html';
+              });
+          } else {
+            mensagemErro.textContent = mensagem;
+          }
+        })
+        .catch(function () {
+          mensagemErro.textContent = 'Erro ao realizar login. Tente novamente.';
+        });
+    });
+  </script>
+
 </body>
 </html>

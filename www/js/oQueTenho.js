@@ -1,8 +1,5 @@
-
-if (!estaLogado()) {
-  window.location.href = 'login.html';
-}
-
+sessaoPronta.then(function () {
+  
 const btnBuscar = document.getElementById('btnBuscar');
 const btnAddIngrediente = document.getElementById('btnAddIngrediente');
 const listaIngredientes = document.getElementById('listaIngredientes');
@@ -160,4 +157,6 @@ btnBuscar.addEventListener('click', function () {
     .catch(function () {
       resultado.textContent = 'Erro ao buscar receitas.';
     });
+});
+
 });

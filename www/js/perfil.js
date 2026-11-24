@@ -1,3 +1,4 @@
+sessaoPronta.then(function () {
 if (!estaLogado()) {
   window.location.href = 'login.html';
 }
@@ -163,3 +164,5 @@ if (btnSair) {
       });
   });
 }
+
+});

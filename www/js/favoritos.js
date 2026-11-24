@@ -1,3 +1,4 @@
+sessaoPronta.then(function () {
 if (!estaLogado()) {
   window.location.href = 'login.html';
 }
@@ -112,4 +113,6 @@ listaFavoritos.addEventListener('click', function (e) {
       alert('Erro ao remover favorito.');
       botao.disabled = false;
     });
+});
+
 });

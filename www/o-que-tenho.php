@@ -1,3 +1,4 @@
+<?php session_start(); if (!isset($_SESSION["usuario_id"])) { header("Location: login.html"); exit; } ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -37,8 +38,8 @@
 
   </div>
 
-  <script src="js/dados.js"></script>
-  <script src="js/favoritos-helper.js"></script>
-  <script src="js/oQueTenho.js"></script>
+  <script src="js/dados.js?v=99"></script>
+  <script src="js/favoritos-helper.js?v=99"></script>
+  <script src="js/oQueTenho.js?v=99"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+sessaoPronta.then(function () {
 // Monta os botões do topo de acordo com o login
 
 const botoesTopo = document.getElementById('botoesTopo');
@@ -73,4 +74,6 @@ buscaHome.addEventListener('keypress', function (e) {
   if (e.key === 'Enter') {
     window.location.href = 'lista.html?busca=' + encodeURIComponent(buscaHome.value);
   }
+});
+
 });

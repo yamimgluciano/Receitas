@@ -43,14 +43,35 @@ function salvarAvaliacao(nome, nota) {
   localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
 }
 
-// Verificação de login
+
+// Verificação de login pela sessão do PHP
+
+let sessao = {
+  logado: false,
+  admin: false
+};
+
+const sessaoPronta = fetch('verificar_sessao.php', {
+  credentials: 'same-origin',
+  cache: 'no-store'
+})
+  .then(function (resposta) {
+    if (!resposta.ok) throw new Error('Erro ao verificar a sessão.');
+    return resposta.json();
+  })
+  .then(function (dados) {
+    sessao = dados;
+  })
+  .catch(function (erro) {
+    console.error('Erro ao verificar a sessão:', erro);
+  });
 
 function estaLogado() {
-  return localStorage.getItem('logado') === 'true';
+  return sessao.logado === true;
 }
 
 function ehAdmin() {
-  return localStorage.getItem('admin') === 'true';
+  return sessao.logado === true && sessao.admin === true;
 }
 
 // Guardar os ingredientes extras adicionados pelo admin

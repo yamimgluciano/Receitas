@@ -1,3 +1,4 @@
+sessaoPronta.then(function () {
 const parametros = new URLSearchParams(window.location.search);
 const idReceita = parametros.get('id');
 
@@ -261,4 +262,6 @@ btnFavoritar.addEventListener('click', function () {
     .finally(function () {
       btnFavoritar.disabled = false;
     });
+});
+
 });

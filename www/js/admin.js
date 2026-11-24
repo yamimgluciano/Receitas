@@ -1,3 +1,4 @@
+sessaoPronta.then(function () {
 // Só acessa essa página quem estiver logado E for administrador
 if (!estaLogado()) {
   window.location.href = 'login.html';
@@ -402,3 +403,5 @@ btnRemCategoria.addEventListener('click', function () {
     });
 });
 
+
+});
