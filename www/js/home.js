@@ -4,7 +4,7 @@ sessaoPronta.then(function () {
 const botoesTopo = document.getElementById('botoesTopo');
 
 if (estaLogado()) {
-  let html = '<a href="perfil.html" class="entrar">Perfil</a>';
+  let html = '<a href="perfil.php" class="entrar">Perfil</a>';
 
   if (ehAdmin()) {
     html += '<a href="admin.html" class="cadastrar">Admin</a>';

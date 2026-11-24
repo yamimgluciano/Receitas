@@ -1,7 +1,5 @@
 sessaoPronta.then(function () {
-if (!estaLogado()) {
-  window.location.href = 'login.html';
-}
+
 
 const btnEditarPerfil = document.getElementById('btnEditarPerfil');
 const nomePerfil = document.getElementById('nomePerfil');
