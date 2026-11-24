@@ -7,7 +7,7 @@ if (estaLogado()) {
   let html = '<a href="perfil.php" class="entrar">Perfil</a>';
 
   if (ehAdmin()) {
-    html += '<a href="admin.html" class="cadastrar">Admin</a>';
+    html += '<a href="admin.php" class="cadastrar">Admin</a>';
   }
 
   botoesTopo.innerHTML = html;

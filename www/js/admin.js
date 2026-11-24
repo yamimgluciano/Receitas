@@ -1,10 +1,28 @@
 sessaoPronta.then(function () {
-// Só acessa essa página quem estiver logado E for administrador
-if (!estaLogado()) {
-  window.location.href = 'login.html';
-} else if (!ehAdmin()) {
-  alert('Acesso restrito ao administrador.');
-  window.location.href = 'index.html';
+  function informarIngredientes(atuais = []) {
+  const ingredientes = [];
+
+  do {
+    const anterior = atuais[ingredientes.length];
+
+    const nome = prompt('Nome do ingrediente:', anterior?.nome || '');
+    if (nome === null || !nome.trim()) return null;
+
+    const quantidade = prompt(
+      'Quantidade (ex.: 2 colheres de):',
+      anterior?.quantidade || ''
+    );
+
+    if (quantidade === null || !quantidade.trim()) return null;
+
+    ingredientes.push({
+      nome: nome.trim(),
+      quantidade: quantidade.trim()
+    });
+
+  } while (confirm('Deseja adicionar outro ingrediente?'));
+
+  return ingredientes;
 }
 
 // Lista e gerenciamento das receitas do administrador
@@ -101,8 +119,7 @@ document.getElementById('btnAddReceita').addEventListener('click', function () {
     return;
   }
 
-  const ingredientes = prompt('Ingredientes com quantidades (separados por vírgula):');
-  if (!ingredientes) return;
+ const ingredientes = informarIngredientes();  if (!ingredientes) return;
 
   const preparo = prompt('Modo de preparo:');
   if (!preparo) return;
@@ -122,7 +139,7 @@ document.getElementById('btnAddReceita').addEventListener('click', function () {
   dados.append('tempo', tempo);
   dados.append('dificuldade', dificuldade);
   dados.append('categoria', categoria.trim());
-  dados.append('ingredientes', ingredientes);
+  dados.append('ingredientes', JSON.stringify(ingredientes));
   dados.append('preparo', preparo);
   dados.append('tempo_cozimento', tempoCozimento.trim());
   dados.append('temperatura', temperatura.trim());
@@ -190,11 +207,9 @@ listaAdmin.addEventListener('click', function (e) {
       return;
     }
 
-    const ingredientesAtuais = Array.isArray(receita.ingredientes)
-      ? receita.ingredientes.join(', ')
-      : receita.ingredientes || '';
-
-    const novosIngredientes = prompt('Ingredientes com quantidades (separados por vírgula):', ingredientesAtuais);
+    const novosIngredientes = informarIngredientes(
+  receita.ingredientes_detalhados || []
+);
     if (novosIngredientes === null) return;
 
     const novoModoPreparo = prompt('Modo de preparo:', receita.preparo || '');
@@ -225,7 +240,7 @@ listaAdmin.addEventListener('click', function (e) {
     dados.append('tempo', novoTempo.trim());
     dados.append('dificuldade', novaDificuldade.trim());
     dados.append('categoria', novaCategoria.trim());
-    dados.append('ingredientes', novosIngredientes.trim());
+    dados.append('ingredientes', JSON.stringify(novosIngredientes));
     dados.append('preparo', novoModoPreparo.trim());
     dados.append('tempo_cozimento', novoTempoCozimento.trim());
     dados.append('temperatura', novaTemperatura.trim());
