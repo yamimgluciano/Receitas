@@ -47,7 +47,7 @@ if ($acao == "excluir") {
     if ($sql->affected_rows > 0) {
         echo "Ingrediente excluído com sucesso!";
     } else {
-        echo "Ingrediente em uso ou não encontrado.";
+        echo "Não é possível excluir este ingrediente, pois ele está vinculado a uma ou mais receitas.";
     }
 }
 ?>

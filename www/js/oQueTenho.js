@@ -70,7 +70,7 @@ sessaoPronta.then(function () {
   listaIngredientes.addEventListener('click', function (e) {
     if (e.target.classList.contains('remover')) {
 
-      if (!confirm('Deseja excluir este ingrediente?')) return;
+      if (!confirm('Deseja excluir este ingrediente? Ingredientes vinculados a receitas não podem ser excluídos.')) return;
 
       const dados = new FormData();
       dados.append('acao', 'excluir');
