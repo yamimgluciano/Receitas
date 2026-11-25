@@ -81,7 +81,63 @@ if (idReceita) {
 
       document.title = nomeReceita + ' — Receitas em Casa';
       document.getElementById('nomeReceita').textContent = receita.nome;
-      document.getElementById('fotoReceita').textContent = receita.emoji || '🍽️';
+      if (receita.imagem) {
+    document.getElementById('fotoReceita').innerHTML = '<img src="' + receita.imagem + '" style="width:100%;height:100%;object-fit:contain;border-radius:inherit;" alt="Foto da receita">';
+} else {
+    document.getElementById('fotoReceita').textContent = receita.emoji || '🍽️';
+}
+
+
+      if (ehAdmin()) {
+        const foto = document.getElementById('fotoReceita');
+        foto.style.position = 'relative';
+
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.style.cssText = 'position:absolute;top:12px;right:12px;left:auto;width:auto;min-width:0;margin:0;display:flex;align-items:center;gap:6px;background:rgba(255,250,242,0.94);color:#B45C2C;border:1px solid #E0D2BC;border-radius:8px;width:auto;height:auto;padding:8px 14px;font-size:14px;font-weight:500;cursor:pointer;z-index:2;';
+
+        botao.innerHTML = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4H10L7 8H4A2 2 0 0 0 2 10V18A2 2 0 0 0 4 20H20A2 2 0 0 0 22 18V10A2 2 0 0 0 20 8H17Z"/><circle cx="12" cy="14" r="4"/></svg>' + (receita.imagem ? 'Alterar foto' : 'Adicionar foto');
+
+        botao.title = receita.imagem ? 'Alterar foto' : 'Adicionar foto';
+        botao.setAttribute('aria-label', botao.title);
+        foto.appendChild(botao);
+
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/jpeg,image/png,image/webp';
+        input.style.display = 'none';
+        document.body.appendChild(input);
+
+        botao.onclick = function () {
+          input.click();
+        };
+
+        input.onchange = function () {
+          if (!input.files.length) return;
+
+          const dados = new FormData();
+          dados.append('id', receita.id);
+          dados.append('imagem', input.files[0]);
+
+          fetch('alterar_imagem.php', {
+            method: 'POST',
+            body: dados
+          })
+            .then(resposta => resposta.text())
+            .then(function (mensagem) {
+              alert(mensagem);
+
+              if (mensagem.trim() === 'Foto atualizada com sucesso!') {
+                window.location.reload();
+              }
+            })
+            .catch(function () {
+              alert('Erro ao atualizar a foto.');
+            });
+
+          input.value = '';
+        };
+      }
 
       document.getElementById('metaReceita').textContent =
         '⏱ ' + receita.tempo + ' · 📂 ' + receita.categoria +

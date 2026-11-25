@@ -1,4 +1,41 @@
 sessaoPronta.then(function () {
+  function selecionarImagem(dados, destino, mensagemSucesso) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/jpeg,image/png,image/webp';
+
+  function enviar() {
+    fetch(destino, {
+      method: 'POST',
+      body: dados
+    })
+      .then(resposta => resposta.text())
+      .then(function (mensagem) {
+        alert(mensagem);
+
+        if (mensagem.trim() === mensagemSucesso) {
+          mostrarLista();
+        }
+      })
+      .catch(function () {
+        alert('Erro ao salvar receita.');
+      });
+  }
+
+  if (confirm('Deseja selecionar uma foto para a receita?')) {
+    input.onchange = function () {
+      if (input.files.length > 0) {
+        dados.append('imagem', input.files[0]);
+        enviar();
+      }
+    };
+
+    document.body.appendChild(input);
+input.click();
+  } else {
+    enviar();
+  }
+}
   function informarIngredientes(atuais = []) {
   const ingredientes = [];
 
@@ -6,7 +43,11 @@ sessaoPronta.then(function () {
     const anterior = atuais[ingredientes.length];
 
     const nome = prompt('Nome do ingrediente:', anterior?.nome || '');
-    if (nome === null || !nome.trim()) return null;
+    if (nome === null) return null;
+
+if (!nome.trim()) {
+  return ingredientes.length > 0 ? ingredientes : null;
+}
 
     const quantidade = prompt(
       'Quantidade (ex.: 2 colheres de):',
@@ -42,7 +83,7 @@ function criarItemAdmin(receita) {
     '<span class="nome-receita">' + receita.nome + '</span><br>' +
     '<small class="meta">⏱ ' + receita.tempo + ' · ★ ' + receita.dificuldade + ' · 📂 ' + receita.categoria + '</small>' +
     '</span>' +
-    '<span><a href="#" class="editar">Editar</a> <a href="#" class="excluir">✕</a></span>';
+    '<span><a href="#" class="editar">Editar</a> <a href="#" class="alterar-foto" style="display:inline-flex;align-items:center;gap:4px;color:#B45C2C"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4H10L7 8H4A2 2 0 0 0 2 10V18A2 2 0 0 0 4 20H20A2 2 0 0 0 22 18V10A2 2 0 0 0 20 8H17Z"/><circle cx="12" cy="14" r="4"/></svg> Foto</a> <a href="#" class="excluir" style="font-weight:700;color:#B45C2C">✕</a></span>';
 
   return item;
 }
@@ -145,28 +186,59 @@ document.getElementById('btnAddReceita').addEventListener('click', function () {
   dados.append('temperatura', temperatura.trim());
   dados.append('equipamento', equipamento.trim());
 
-  fetch('salvar_receita.php', {
-    method: 'POST',
-    body: dados
-  })
-    .then(function (resposta) {
-      return resposta.text();
-    })
-    .then(function (mensagem) {
-      alert(mensagem);
-
-      if (mensagem.trim() === 'Receita cadastrada com sucesso!') {
-        mostrarLista();
-      }
-    })
-    .catch(function () {
-      alert('Erro ao cadastrar receita.');
-    });
+  selecionarImagem(
+  dados,
+  'salvar_receita.php',
+  'Receita cadastrada com sucesso!'
+);
 });
 
 // Editar ou excluir receita
 
 listaAdmin.addEventListener('click', function (e) {
+  if (e.target.closest('.alterar-foto')) {
+    e.preventDefault();
+
+    const item = e.target.closest('.item-admin');
+    const input = document.createElement('input');
+
+    input.type = 'file';
+    input.accept = 'image/jpeg,image/png,image/webp';
+    input.style.display = 'none';
+
+    document.body.appendChild(input);
+
+    input.onchange = function () {
+      if (!input.files.length) return;
+
+      const dados = new FormData();
+      dados.append('id', item.dataset.id);
+      dados.append('imagem', input.files[0]);
+
+      fetch('alterar_imagem.php', {
+        method: 'POST',
+        body: dados
+      })
+        .then(resposta => resposta.text())
+        .then(function (mensagem) {
+          alert(mensagem);
+          mostrarLista();
+        })
+        .catch(function () {
+          alert('Erro ao atualizar a foto.');
+        });
+
+      input.remove();
+    };
+
+    input.oncancel = function () {
+      input.remove();
+    };
+
+    input.click();
+    return;
+  }
+
 
   if (e.target.classList.contains('editar')) {
     e.preventDefault();
@@ -246,23 +318,11 @@ listaAdmin.addEventListener('click', function (e) {
     dados.append('temperatura', novaTemperatura.trim());
     dados.append('equipamento', novoEquipamento.trim());
 
-    fetch('editar_receita.php', {
-      method: 'POST',
-      body: dados
-    })
-      .then(function (resposta) {
-        return resposta.text();
-      })
-      .then(function (mensagem) {
-        alert(mensagem);
-
-        if (mensagem.trim() === 'Receita atualizada com sucesso!') {
-          mostrarLista();
-        }
-      })
-      .catch(function () {
-        alert('Erro ao atualizar receita.');
-      });
+    selecionarImagem(
+  dados,
+  'editar_receita.php',
+  'Receita atualizada com sucesso!'
+);
   }
 
   if (e.target.classList.contains('excluir')) {

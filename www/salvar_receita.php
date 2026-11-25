@@ -2,6 +2,7 @@
 session_start();
 require_once("conecta.php");
 require_once("ingredientes_funcoes.php");
+require_once("upload_imagem.php");
 
 if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "admin") {
     exit("Acesso negado.");
@@ -52,26 +53,28 @@ if (isset($_POST["cadastrar"])) {
     $conexao->begin_transaction();
 
     try {
+        $imagem = uploadImagem() ?? "";
         $sql = $conexao->prepare(
             "INSERT INTO receitas
             (nome, descricao, ingredientes, preparo, tempo,
              categoria, imagem, dificuldade, emoji,
              tempo_cozimento, temperatura, equipamento)
-            VALUES (?, '', ?, ?, ?, ?, '', ?, '🍽️', ?, ?, ?)"
+            VALUES (?, '', ?, ?, ?, ?, ?, ?, '🍽️', ?, ?, ?)"
         );
 
         $sql->bind_param(
-            "sssissiis",
-            $nome,
-            $textoIngredientes,
-            $preparo,
-            $tempo,
-            $categoria,
-            $dificuldade,
-            $tempoCozimento,
-            $temperatura,
-            $equipamento
-        );
+    "sssisssiis",
+    $nome,
+    $textoIngredientes,
+    $preparo,
+    $tempo,
+    $categoria,
+    $imagem,
+    $dificuldade,
+    $tempoCozimento,
+    $temperatura,
+    $equipamento
+);
 
         $sql->execute();
 

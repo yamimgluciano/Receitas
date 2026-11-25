@@ -43,7 +43,11 @@ function mostrarFavoritos() {
 
         const foto = document.createElement('div');
         foto.className = 'foto';
-        foto.textContent = receita.emoji || '🍽️';
+        if (receita.imagem) {
+    foto.innerHTML = '<img src="' + receita.imagem + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" alt="Foto da receita">';
+} else {
+    foto.textContent = receita.emoji || '🍽️';
+}
 
         const info = document.createElement('div');
         info.className = 'info';

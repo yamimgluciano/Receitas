@@ -2,6 +2,7 @@
 session_start();
 require_once("conecta.php");
 require_once("ingredientes_funcoes.php");
+require_once("upload_imagem.php");
 
 if (!isset($_SESSION["tipo"]) || $_SESSION["tipo"] != "admin") {
     exit("Acesso negado.");
@@ -54,6 +55,7 @@ if (isset($_POST["editar"])) {
     $conexao->begin_transaction();
 
     try {
+        $imagem = uploadImagem();
         $sql = $conexao->prepare(
             "UPDATE receitas SET
                 nome = ?,
@@ -64,23 +66,25 @@ if (isset($_POST["editar"])) {
                 preparo = ?,
                 tempo_cozimento = ?,
                 temperatura = ?,
-                equipamento = ?
+                equipamento = ?,
+                imagem = COALESCE(?, imagem)
             WHERE id = ?"
         );
 
         $sql->bind_param(
-            "sissssiisi",
-            $nome,
-            $tempo,
-            $dificuldade,
-            $categoria,
-            $textoIngredientes,
-            $preparo,
-            $tempoCozimento,
-            $temperatura,
-            $equipamento,
-            $id
-        );
+    "sissssiissi",
+    $nome,
+    $tempo,
+    $dificuldade,
+    $categoria,
+    $textoIngredientes,
+    $preparo,
+    $tempoCozimento,
+    $temperatura,
+    $equipamento,
+    $imagem,
+    $id
+);
 
         $sql->execute();
 

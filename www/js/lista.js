@@ -18,7 +18,7 @@ function criarCard(receita) {
   card.className = 'receita-card';
 
   card.innerHTML =
-    '<div class="foto">' + receita.emoji + '</div>' +
+    '<div class="foto">' + (receita.imagem ? '<img src="' + receita.imagem + '" alt="Foto da receita" style="width:100%;height:100%;object-fit:cover;">' : receita.emoji) + '</div>' +
     '<div class="info">' +
     '<h3>' + receita.nome + '</h3>' +
     '<div class="meta">⏱ ' + receita.tempo + ' · ★ ' + receita.dificuldade + '</div>' +
