@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>O que tenho em casa? — Receitas em Casa</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=103">
 </head>
 <body>
 
@@ -40,6 +40,6 @@
 
   <script src="js/dados.js?v=99"></script>
   <script src="js/favoritos-helper.js?v=99"></script>
-  <script src="js/oQueTenho.js?v=99"></script>
+  <script src="js/oQueTenho.js?v=105"></script>
 </body>
 </html>

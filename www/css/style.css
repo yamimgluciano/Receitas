@@ -223,7 +223,7 @@ h2.secao-titulo {
 }
 
 .receita-card .foto {
-  height: 120px;
+  height: 220px;
   background: #EFE3D0;
   display: flex;
   align-items: center;
@@ -291,7 +291,7 @@ h2.secao-titulo {
 }
 
 .receita-detalhe .foto-grande {
-  height: 200px;
+  height: 350px;
   background: #EFE3D0;
   border-radius: 12px;
   display: flex;
