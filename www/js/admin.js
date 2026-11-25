@@ -1,42 +1,22 @@
-sessaoPronta.then(function () {
-  function selecionarImagem(dados, destino, mensagemSucesso) {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/jpeg,image/png,image/webp';
-
-  function enviar() {
+﻿sessaoPronta.then(function () {
+  function salvarDadosReceita(dados, destino, mensagemSucesso) {
     fetch(destino, {
-      method: 'POST',
-      body: dados
+        method: 'POST',
+        body: dados
     })
-      .then(resposta => resposta.text())
-      .then(function (mensagem) {
+    .then(resposta => resposta.text())
+    .then(function (mensagem) {
         alert(mensagem);
 
         if (mensagem.trim() === mensagemSucesso) {
-          mostrarLista();
+            mostrarLista();
         }
-      })
-      .catch(function () {
+    })
+    .catch(function () {
         alert('Erro ao salvar receita.');
-      });
-  }
-
-  if (confirm('Deseja selecionar uma foto para a receita?')) {
-    input.onchange = function () {
-      if (input.files.length > 0) {
-        dados.append('imagem', input.files[0]);
-        enviar();
-      }
-    };
-
-    document.body.appendChild(input);
-input.click();
-  } else {
-    enviar();
-  }
+    });
 }
-  function informarIngredientes(atuais = []) {
+function informarIngredientes(atuais = []) {
   const ingredientes = [];
 
   do {
@@ -186,7 +166,7 @@ document.getElementById('btnAddReceita').addEventListener('click', function () {
   dados.append('temperatura', temperatura.trim());
   dados.append('equipamento', equipamento.trim());
 
-  selecionarImagem(
+  salvarDadosReceita(
   dados,
   'salvar_receita.php',
   'Receita cadastrada com sucesso!'
@@ -318,7 +298,7 @@ listaAdmin.addEventListener('click', function (e) {
     dados.append('temperatura', novaTemperatura.trim());
     dados.append('equipamento', novoEquipamento.trim());
 
-    selecionarImagem(
+    salvarDadosReceita(
   dados,
   'editar_receita.php',
   'Receita atualizada com sucesso!'
@@ -480,3 +460,4 @@ btnRemCategoria.addEventListener('click', function () {
 
 
 });
+
