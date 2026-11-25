@@ -58,6 +58,14 @@ docker compose down
 - `docker-compose.yml`: configuração do ambiente
 - `prog_internet.sql`: estrutura e dados do banco de dados
 
+## Imagens das receitas
+
+- A inclusão de fotos é opcional.
+- As fotos podem ser adicionadas ou alteradas pelo botão da câmera.
+- Formatos aceitos: JPG, JPEG, PNG e WEBP.
+- Limite de tamanho definido no código: 5 MB por imagem.
+- Receitas sem foto exibem um emoji.
+
 ## Observações
 
 - As imagens são armazenadas em arquivos e seus caminhos são registrados no banco de dados.
