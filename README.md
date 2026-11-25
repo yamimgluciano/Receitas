@@ -1,65 +1,73 @@
-﻿# Receitas em Casa
+# Receitas em Casa
 
-## Sobre o projeto
+Sistema web desenvolvido na disciplina de Projeto Integrador II, voltado principalmente para jovens e estudantes que moram sozinhos. O sistema permite consultar receitas, filtrar por categorias e encontrar sugestões de refeições com os ingredientes disponíveis em casa.
 
-O Receitas em Casa é um sistema web desenvolvido para a disciplina de Projeto Integrador II. A ideia surgiu da necessidade de facilitar a rotina de jovens e estudantes que moram sozinhos, ajudando na escolha de receitas simples e no aproveitamento dos ingredientes que já possuem em casa.
+## Tecnologias
+
+HTML, CSS, JavaScript, PHP, MySQL, Docker e phpMyAdmin.
 
 ## Funcionalidades
 
-- Cadastro e login de usuários;
-- Busca e filtragem de receitas;
-- Sugestões de receitas com os ingredientes disponíveis em casa;
-- Consulta de ingredientes e modo de preparo;
-- Favoritos e avaliações;
-- Painel administrativo;
-- Cadastro, edição e exclusão de receitas;
-- Gerenciamento de categorias e ingredientes;
-- Upload e alteração de fotos das receitas.
+**Usuário**
 
-## Tecnologias utilizadas
+- Cadastro, login e logout
+- Busca e filtragem de receitas
+- Sugestões de receitas a partir dos ingredientes disponíveis
+- Consulta de ingredientes, modo de preparo e tempo de cozimento
+- Receitas favoritas
+- Avaliação de receitas
 
-- HTML
-- CSS
-- JavaScript
-- PHP
-- MySQL
-- Docker
-- phpMyAdmin
-- Git e GitHub
+**Administrador (acesso restrito)**
 
-## Como executar o projeto
+- Painel administrativo
+- Cadastro, edição e exclusão de receitas
+- Gerenciamento de categorias e ingredientes
+- Upload e alteração de fotos das receitas
 
-1. Baixe ou clone o repositório.
-2. Abra a pasta do projeto no VS Code.
-3. Inicie o Docker.
-4. Execute no terminal:
+## Como executar
 
-   ```bash
-   docker compose up -d
-   ```
+Requisito: ter o [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado e em execução.
 
-5. Acesse o phpMyAdmin em http://localhost:8081.
-6. Selecione o banco `prog_internet` e importe o arquivo `prog_internet.sql`.
-7. Acesse o site em http://localhost:8080.
+```bash
+git clone https://github.com/yamimgluciano/Receitas.git
+cd Receitas
+docker compose up -d
+```
 
+| Serviço | Endereço |
+|---|---|
+| Site | http://localhost:8080 |
+| phpMyAdmin | http://localhost:8081 |
+
+**Arquivo inicial:** `www/index.html`
+
+Após importar o banco de dados, acesse a página inicial do sistema em http://localhost:8080.
+
+No phpMyAdmin, selecione o banco `prog_internet` e importe o arquivo `prog_internet.sql`.
+
+Para encerrar os serviços:
+
+```bash
+docker compose down
+```
+
+## Estrutura
+
+- `www/`: arquivos do sistema
+- `www/imagens/receitas/`: fotos das receitas
+- `docker-compose.yml`: configuração do ambiente
+- `prog_internet.sql`: estrutura e dados do banco de dados
+
+## Observações
+
+- As imagens são armazenadas em arquivos e seus caminhos são registrados no banco de dados.
+  
 ## Acesso administrativo
 
-O sistema possui dois tipos de usuários: usuário comum e administrador.
+Credenciais para teste do sistema:
 
-O login e a senha do administrador serão encaminhados separadamente ao professor.
+- E-mail: yasmimluciano01@gmail.com
+- Senha: 4848
 
-## Banco de dados
-
-O arquivo `prog_internet.sql` contém a estrutura e os dados necessários para o funcionamento do sistema.
-
-As fotos das receitas ficam na pasta `www/imagens/receitas` e seus caminhos são armazenados no banco de dados.
-
-## Informações acadêmicas
-
-Instituição: IFRS
-
-Disciplina: Projeto Integrador II
-
-Turma: Info-4
-
-Ano: 2026
+As credenciais são destinadas apenas ao ambiente de desenvolvimento e avaliação do projeto.
+**Desenvolvido por Yasmim Gomes Luciano — Projeto Integrador II — IFRS — Info-4 — 2026.**
